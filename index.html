@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>نظم دعم القرار والنظم الذكية - إعداد الطالب قيس طلال الجازي</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* إعدادات أساسية */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-main: #050816;
+            --bg-card: rgba(15, 23, 42, 0.9);
+            --bg-card-soft: rgba(15, 23, 42, 0.7);
+            --accent: #38bdf8;
+            --accent-2: #a855f7;
+            --text-main: #e5e7eb;
+            --text-muted: #9ca3af;
+            --border-soft: rgba(148, 163, 184, 0.3);
+            --shadow-soft: 0 20px 40px rgba(15, 23, 42, 0.7);
+        }
+
+        body.dark-theme {
+            --bg-main: #f4f4f5;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --bg-card-soft: rgba(255, 255, 255, 0.8);
+            --accent: #0ea5e9;
+            --accent-2: #6366f1;
+            --text-main: #020617;
+            --text-muted: #4b5563;
+            --border-soft: rgba(148, 163, 184, 0.5);
+            --shadow-soft: 0 20px 40px rgba(15, 23, 42, 0.15);
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #1d283a 0, #020617 55%, #000 100%);
+            color: var(--text-main);
+            line-height: 1.8;
+            scroll-behavior: smooth;
+        }
+
+        body.dark-theme {
+            background: radial-gradient(circle at top, #e0f2fe 0, #e5e7eb 50%, #e4e4e7 100%);
+        }
+
+        /* خلفية زخرفية */
+        .background-glow {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glow-circle {
+            position: absolute;
+            border-radius: 999px;
+            filter: blur(60px);
+            opacity: 0.5;
+        }
+
+        .glow-1 {
+            width: 300px;
+            height: 300px;
+            background: #38bdf8;
+            top: -80px;
+            right: 10%;
+        }
+
+        .glow-2 {
+            width: 280px;
+            height: 280px;
+            background: #a855f7;
+            bottom: -60px;
+            left: 5%;
+        }
+
+        .glow-3 {
+            width: 220px;
+            height: 220px;
+            background: #22c55e;
+            top: 40%;
+            left: 55%;
+        }
+
+        body.dark-theme .glow-circle {
+            opacity: 0.25;
+        }
+
+        /* الهيدر و النافبار */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(16px);
+            background: linear-gradient(to bottom,
+                rgba(15, 23, 42, 0.95),
+                rgba(15, 23, 42, 0.7),
+                transparent
+            );
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        body.dark-theme header {
+            background: linear-gradient(to bottom,
+                rgba(248, 250, 252, 0.98),
+                rgba(248, 250, 252, 0.8),
+                transparent
+            );
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+
+        .brand-title {
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: 0.03em;
+        }
+
+        .brand-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            padding: 0.35rem 0.7rem;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            border-color: rgba(148, 163, 184, 0.6);
+            background: rgba(15, 23, 42, 0.6);
+        }
+
+        body.dark-theme nav a:hover {
+            background: rgba(248, 250, 252, 0.9);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            border-radius: 999px;
+            border: 1px solid var(--border-soft);
+            padding: 0.45rem 0.9rem;
+            font-size: 0.8rem;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(168, 85, 247, 0.1));
+            color: var(--text-main);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: all 0.25s ease;
+        }
+
+        .btn span.icon {
+            font-size: 0.95rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.4);
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.3), rgba(168, 85, 247, 0.3));
+        }
+
+        /* البطل (الهيرو) */
+        .hero {
+            max-width: 1100px;
+            margin: 1rem auto 0;
+            padding: 2rem 1.25rem 1rem;
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+            gap: 1.75rem;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 1.5rem;
+            }
+        }
+
+        .hero-text h1 {
+            font-size: clamp(1.9rem, 3vw, 2.4rem);
+            font-weight: 800;
+            margin-bottom: 0.6rem;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(120deg, #38bdf8, #a855f7, #22c55e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-text p.lead {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            max-width: 36rem;
+        }
+
+        .hero-meta {
+            margin-top: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .meta-pill {
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid var(--border-soft);
+        }
+
+        body.dark-theme .meta-pill {
+            background: rgba(248, 250, 252, 0.9);
+        }
+
+        .hero-card {
+            background: radial-gradient(circle at top, rgba(56, 189, 248, 0.2), transparent 55%),
+                        radial-gradient(circle at bottom, rgba(168, 85, 247, 0.25), transparent 55%),
+                        var(--bg-card);
+            border-radius: 1.75rem;
+            padding: 1.4rem 1.4rem 1.15rem;
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                rgba(148, 163, 184, 0.25),
+                transparent,
+                rgba(148, 163, 184, 0.2)
+            );
+            mask-image: radial-gradient(circle at top left, black, transparent 60%);
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        .hero-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--text-muted);
+            margin-bottom: 0.6rem;
+        }
+
+        .hero-card h2 {
+            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .hero-card p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .hero-stats {
+            margin-top: 0.8rem;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+
+        .stat-box {
+            padding: 0.6rem 0.7rem;
+            border-radius: 1rem;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            font-size: 0.72rem;
+        }
+
+        body.dark-theme .stat-box {
+            background: rgba(248, 250, 252, 0.95);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            margin-bottom: 0.15rem;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* المضمون الرئيسي */
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0.5rem 1.25rem 4rem;
+        }
+
+        .section {
+            margin-top: 2rem;
+            padding: 1.6rem 1.4rem;
+            border-radius: 1.6rem;
+            background: var(--bg-card-soft);
+            border: 1px solid var(--border-soft);
+            box-shadow: 0 16px 30px rgba(15, 23, 42, 0.45);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-theme .section {
+            box-shadow: 0 16px 30px rgba(15, 23, 42, 0.1);
+        }
+
+        .section::before {
+            content: attr(data-label);
+            position: absolute;
+            top: 1rem;
+            left: 1.4rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            opacity: 0.75;
+        }
+
+        .section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 0.7rem;
+            padding-inline-start: 0.5rem;
+            border-inline-start: 3px solid var(--accent);
+        }
+
+        .section p {
+            font-size: 0.9rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .section ul {
+            margin: 0.3rem 0 0.8rem;
+            padding-inline-start: 1.15rem;
+            font-size: 0.9rem;
+        }
+
+        .section li {
+            margin-bottom: 0.25rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.15rem 0.55rem;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(148, 163, 184, 0.7);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 0.6rem;
+        }
+
+        body.dark-theme .badge {
+            background: rgba(248, 250, 252, 0.95);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.2rem;
+            margin-top: 0.6rem;
+        }
+
+        @media (max-width: 800px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            padding: 0.9rem 1rem;
+            border-radius: 1.2rem;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            font-size: 0.86rem;
+        }
+
+        body.dark-theme .card {
+            background: rgba(248, 250, 252, 0.95);
+        }
+
+        .card h3 {
+            font-size: 0.98rem;
+            margin-bottom: 0.4rem;
+            color: var(--accent);
+        }
+
+        .muted {
+            color: var(--text-muted);
+        }
+
+        /* جدول المستويات الإدارية */
+        .levels-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.7rem;
+            font-size: 0.85rem;
+        }
+
+        .levels-table th,
+        .levels-table td {
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            padding: 0.45rem;
+            text-align: center;
+        }
+
+        .levels-table th {
+            background: rgba(15, 23, 42, 0.85);
+        }
+
+        body.dark-theme .levels-table th {
+            background: rgba(248, 250, 252, 0.95);
+        }
+
+        .tag {
+            display: inline-flex;
+            padding: 0.1rem 0.5rem;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            border: 1px solid rgba(148, 163, 184, 0.7);
+            color: var(--accent);
+        }
+
+        /* تايم لاين مراحل اتخاذ القرار */
+        .timeline {
+            margin-top: 0.7rem;
+            position: relative;
+            padding-right: 0.8rem;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            right: 0.3rem;
+            top: 0.25rem;
+            bottom: 0.25rem;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), var(--accent-2));
+            opacity: 0.9;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-right: 1.7rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            right: 0;
+            top: 0.25rem;
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 999px;
+            border: 2px solid var(--accent);
+            background: #020617;
+        }
+
+        body.dark-theme .timeline-dot {
+            background: #f9fafb;
+        }
+
+        .timeline-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 0.15rem;
+            color: var(--accent);
+        }
+
+        .timeline-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* فوتر */
+        footer {
+            border-top: 1px solid var(--border-soft);
+            margin-top: 2.5rem;
+            padding-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .student-name {
+            font-weight: 700;
+            color: var(--accent-2);
+        }
+
+        /* زر لأعلى */
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            width: 2.2rem;
+            height: 2.2rem;
+            border-radius: 999px;
+            border: 1px solid var(--border-soft);
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 12px 25px rgba(15, 23, 42, 0.6);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.25s ease;
+            font-size: 1.1rem;
+            z-index: 40;
+        }
+
+        body.dark-theme #scrollTopBtn {
+            background: rgba(248, 250, 252, 0.95);
+            box-shadow: 0 12px 25px rgba(15, 23, 42, 0.18);
+        }
+
+        #scrollTopBtn.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        /* ظهور تدريجي للأقسام */
+        .reveal {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<div class="background-glow">
+    <div class="glow-circle glow-1"></div>
+    <div class="glow-circle glow-2"></div>
+    <div class="glow-circle glow-3"></div>
+</div>
+
+<header>
+    <div class="nav-container">
+        <div class="brand">
+            <div class="brand-title">نظم دعم القرار والنظم الذكية</div>
+            <div class="brand-sub">الفصل الأول – ملخص وشرح تفاعلي</div>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="#intro">مقدمة</a></li>
+                <li><a href="#info-importance">أهمية المعلومات</a></li>
+                <li><a href="#info-quality">جودة المعلومات</a></li>
+                <li><a href="#levels-reports">المستويات والتقارير</a></li>
+                <li><a href="#strategic">الإدارة الاستراتيجية</a></li>
+                <li><a href="#css-factors">عوامل النجاح الحرجة</a></li>
+                <li><a href="#dss-def">تعريف DSS</a></li>
+                <li><a href="#dss-components">عناصر DSS</a></li>
+                <li><a href="#decision-process">مراحل القرار</a></li>
+                <li><a href="#example">مثال تطبيقي</a></li>
+            </ul>
+        </nav>
+
+        <div class="nav-actions">
+            <button id="themeToggle" class="btn" type="button">
+                <span class="icon">☾</span>
+                <span>تبديل الثيم</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="hero-text">
+        <h1>
+            ملخص وشــرح
+            <span class="hero-gradient">نظم دعم القرار والنظم الذكية</span>
+        </h1>
+        <p class="lead">
+            هذا الموقع يقدم شرحاً مبسطاً ومتكاملاً لموضوع نظم دعم القرار (Decision Support Systems)
+            والنظم الذكية، مع ربط مباشر بسياق الإدارة الحديثة، وأهمية المعلومات في دعم القرارات
+            على مختلف المستويات الإدارية داخل المنظمة.
+        </p>
+        <div class="hero-meta">
+            <span class="meta-pill">مادة: نظم دعم القرار والنظم الذكية</span>
+            <span class="meta-pill">الفصل الأول – قرار ومعلومات</span>
+            <span class="meta-pill">تصميم وشرح تعليمي</span>
+        </div>
+    </div>
+
+    <div class="hero-card">
+        <div class="hero-tag">Decision Support Systems • DSS</div>
+        <h2>ما الذي ستتعلمـه؟</h2>
+        <p>
+            • لماذا أصبحت المعلومات عنصراً رئيسياً لنجاح المنظمات؟  
+            • ما المقصود بنظام دعم القرار؟ وكيف يساعد المدير في المواقف المعقدة وغير المهيكلة؟  
+            • ما هي عناصر DSS ومراحل اتخاذ القرار التي يدعمها؟
+        </p>
+
+        <div class="hero-stats">
+            <div class="stat-box">
+                <div class="stat-label">مراحل القرار</div>
+                <div class="stat-value">4</div>
+                <div class="muted">استخبار – تصميم – اختيار – تنفيذ</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">أنواع المعلومات</div>
+                <div class="stat-value">3</div>
+                <div class="muted">تشغيلية، تكتيكية، استراتيجية</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">مستويات الإدارة</div>
+                <div class="stat-value">3</div>
+                <div class="muted">عليا – وسطى – دنيا</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<main>
+    <!-- مقدمة -->
+    <section id="intro" class="section reveal" data-label="مقدمة">
+        <h2>مقدمة إلى نظم دعم القرار والنظم الذكية</h2>
+        <p>
+            مع تطور التكنولوجيا وتزايد حجم البيانات والمعلومات المتاحة للمنظمات، ظهرت الحاجة إلى
+            نظم متخصصة تساعد الإدارة في التعامل مع هذا الكم الهائل من المعلومات، وتحويله إلى مصدر
+            قوة في اتخاذ القرارات بدلاً من أن يكون عبئاً يسبب التشويش والارتباك.
+        </p>
+        <p>
+            هنا يأتي دور <strong>نظم دعم القرار (Decision Support Systems – DSS)</strong> والنظم الذكية،
+            وهي نظم حاسوبية تُصمم خصيصاً لدعم متخذي القرار في مواجهة
+            <strong>المشكلات غير المهيكلة وشبه المهيكلة</strong> التي لا يكون حلّها واضحاً أو آلياً.
+        </p>
+        <p class="muted">
+            الفكرة الأساسية: تجميع بيانات من مصادر مختلفة، معالجتها وتحليلها، ثم تقديمها للمدير
+            بشكل تقارير، نماذج، محاكاة، أو أسئلة "ماذا لو؟" تساعده على اختيار البديل الأفضل.
+        </p>
+    </section>
+
+    <!-- أهمية المعلومات -->
+    <section id="info-importance" class="section reveal" data-label="أهمية المعلومات">
+        <h2>أهمية المعلومات في المنظمات</h2>
+        <span class="badge">المعلومات = عصب القرار داخل المنظمة</span>
+
+        <p>
+            أصبحت المعلومات اليوم أحد العوامل الرئيسية التي تحدد نجاح أو فشل المنظمة.  
+            فهي تؤثر مباشرة على القرارات التي تتخذها الإدارة في كافة المستويات.
+        </p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>من البيانات إلى المعلومات</h3>
+                <p>
+                    البيانات الخام (أرقام، حقائق، سجلات) لا تكون مفيدة بحد ذاتها،  
+                    لكنها بعد المعالجة والتحليل تتحول إلى <strong>معلومات ذات معنى</strong>  
+                    يمكن الاستفادة منها في فهم الواقع واتخاذ القرار.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>مشكلة تضخم المعلومات</h3>
+                <p>
+                    الإدارة العليا اليوم تواجه مشكلة تدفق <strong>كميات هائلة من المعلومات</strong>
+                    بشكل يومي ومستمر.  
+                    التحدي ليس في الحصول على المعلومات، بل في:
+                </p>
+                <ul>
+                    <li>اختيار المعلومات المهمة وترك غير المهم.</li>
+                    <li>الوصول إلى المعلومة الصحيحة في الوقت المناسب.</li>
+                    <li>التركيز على النوعية وليس مجرد الكمية.</li>
+                </ul>
+            </div>
+        </div>
+
+        <p>
+            لذلك يحتاج المدير إلى نظم معلومات تُخطَّط وتُدار بشكل جيد،  
+            تضمن تدفقاً مستمراً لمعلومات <strong>جيدة، دقيقة، ومحدّثة</strong> ليسهل اتخاذ قرارات سليمة.
+        </p>
+    </section>
+
+    <!-- جودة المعلومات -->
+    <section id="info-quality" class="section reveal" data-label="خصائص جودة المعلومات">
+        <h2>خصائص المعلومات الجيدة لاتخاذ القرار</h2>
+        <p>
+            حتى تساعد المعلومات الإدارة العليا في التخطيط واتخاذ القرارات الاستراتيجية،  
+            يجب أن تتوفر فيها مجموعة من الخصائص الأساسية:
+        </p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>١) الشمولية</h3>
+                <p>
+                    أن تغطي المعلومات <strong>جميع جوانب الموضوع</strong> قيد الدراسة:
+                </p>
+                <ul>
+                    <li>جوانب مالية، تسويقية، بشرية، تشغيلية…</li>
+                    <li>عدم إغفال عناصر رئيسية تؤثر في القرار.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>٢) الدقة</h3>
+                <p>
+                    أن تكون المعلومات <strong>خالية من الأخطاء</strong> قدر الإمكان:
+                </p>
+                <ul>
+                    <li>توثيق مصادر البيانات.</li>
+                    <li>التحقق من صحة الأرقام والتحليلات.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>٣) الملاءمة الزمنية</h3>
+                <p>
+                    أن تُقدَّم المعلومات في <strong>الوقت المناسب</strong>:
+                </p>
+                <ul>
+                    <li>المعلومة المتأخرة تفقد قيمتها.</li>
+                    <li>تحديث مستمر للبيانات حسب تغير الواقع.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>٤) الصلة بالموضوع</h3>
+                <p>
+                    أن تكون المعلومات <strong>مرتبطة مباشرة بموضوع القرار</strong>:
+                </p>
+                <ul>
+                    <li>تجنّب المعلومات الجانبية غير المؤثرة.</li>
+                    <li>تقديم معلومات موجهة لخدمة هدف القرار.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- المستويات الإدارية والتقارير -->
+    <section id="levels-reports" class="section reveal" data-label="المستويات الإدارية والتقارير">
+        <h2>المستويات الإدارية وأنواع التقارير</h2>
+        <p>
+            تختلف طبيعة المعلومات المطلوبة حسب <strong>المستوى الإداري</strong> في المنظمة،  
+            وبالتالي تختلف أنواع التقارير والنظم المستخدمة:
+        </p>
+
+        <table class="levels-table">
+            <thead>
+                <tr>
+                    <th>المستوى الإداري</th>
+                    <th>نوع القضايا</th>
+                    <th>نوع النظام</th>
+                    <th>طبيعة التقارير</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>الإدارة العليا</td>
+                    <td>قضايا استراتيجية بعيدة المدى</td>
+                    <td><span class="tag">ESS</span> نظم دعم الإدارة العليا</td>
+                    <td>تنبؤات، محاكاة، مؤشرات عامة</td>
+                </tr>
+                <tr>
+                    <td>الإدارة الوسطى</td>
+                    <td>قضايا تكتيكية</td>
+                    <td><span class="tag">MIS / DSS</span></td>
+                    <td>تقارير ملخصة، تحليلات، "ماذا لو؟"</td>
+                </tr>
+                <tr>
+                    <td>الإدارة الدنيا (التشغيلية)</td>
+                    <td>قضايا يومية وروتينية</td>
+                    <td><span class="tag">TPS</span> نظم تشغيلية</td>
+                    <td>تقارير عمليات مفصلة، بيانات حالية وتاريخية</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="muted">
+            ملاحظة: نظم دعم القرار DSS غالباً ما تُستخدم على مستوى الإدارة الوسطى والعليا  
+            عندما تحتاج القرارات إلى تحليل سيناريوهات وبدائل متعددة.
+        </p>
+    </section>
+
+    <!-- الإدارة الاستراتيجية -->
+    <section id="strategic" class="section reveal" data-label="الإدارة الاستراتيجية">
+        <h2>استخدام المعلومات في مستوى الإدارة الاستراتيجية</h2>
+        <p>
+            <strong>التخطيط الاستراتيجي</strong> هو أحد أهم أنشطة الإدارة العليا،  
+            ويحتاج إلى نوعين رئيسيين من المعلومات:
+        </p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>١) معلومات خارجية</h3>
+                <ul>
+                    <li>الوضع الاقتصادي العام.</li>
+                    <li>التطورات التكنولوجية.</li>
+                    <li>القوانين الحكومية والتشريعات.</li>
+                    <li>العوامل الاجتماعية والثقافية.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>٢) معلومات داخلية</h3>
+                <ul>
+                    <li>نقاط القوة والضعف داخل المنظمة.</li>
+                    <li>الأهداف العامة والفرعية.</li>
+                    <li>التقسيمات الوظيفية (تسويق، مالية، موارد بشرية...).</li>
+                    <li>أي مشاكل داخلية تؤثر في الأداء.</li>
+                </ul>
+            </div>
+        </div>
+
+        <p>
+            عادةً تغطي هذه المعلومات فترة زمنية من <strong>سنة إلى خمس سنوات</strong>  
+            بهدف:
+        </p>
+        <ul>
+            <li>وضع خطط استراتيجية مستندة إلى معلومات صحيحة.</li>
+            <li>تحليل المجالات التي تظهر فيها المشاكل لاكتشاف الأسباب.</li>
+            <li>التعامل مع درجة عالية من عدم التأكد في القرارات الاستراتيجية.</li>
+        </ul>
+    </section>
+
+    <!-- عوامل النجاح الحرجة -->
+    <section id="css-factors" class="section reveal" data-label="عوامل النجاح الحرجة">
+        <h2>عوامل النجاح الحرجة (Critical Success Factors)</h2>
+        <p>
+            تُعد المعلومات الاستراتيجية بمثابة "المادة الخام" التي تحتاجها الإدارة العليا  
+            لبناء الخطط واتخاذ القرارات التي تحقق <strong>أهداف المنظمة</strong>.  
+            مجموعة العوامل التي لا بد من تحقيقها كي تنجح المنظمة تُسمى:
+            <strong>عوامل النجاح الحرجة</strong>.
+        </p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>مثال: مستشفيات حكومية</h3>
+                <ul>
+                    <li>إدارة تكاليف محسّنة.</li>
+                    <li>استخدام كفء للموارد (كوادر، أجهزة، أسرّة...).</li>
+                    <li>تكامل الرعاية الصحية مع مستشفيات ومراكز أخرى.</li>
+                </ul>
+                <p class="muted">
+                    الهدف العام: تطوير نظام رعاية صحية متميز – ذو طابع غير ربحي.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>مثال: صناعة السيارات</h3>
+                <ul>
+                    <li>شكل خارجي جذّاب للسيارة.</li>
+                    <li>نظام موزعين فعّال وقوي.</li>
+                </ul>
+                <p class="muted">
+                    الهدف العام: نجاح المنتج الجديد وتحقيق أرباح تنافسية.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- تعريف النظام و DSS -->
+    <section id="dss-def" class="section reveal" data-label="مفاهيم أساسية">
+        <h2>مفهوم النظام ونظام دعم القرار (DSS)</h2>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>١) مفهوم النظام</h3>
+                <p>
+                    النظام هو: <strong>مجموعة من العناصر المترابطة</strong> المكوّنة من عنصرين أو أكثر،  
+                    بينهما علاقات وتفاعلات، تعمل معاً لتحقيق هدف مشترك.
+                </p>
+                <p class="muted">
+                    مثال: نظام الجامعة (طلبة، محاضرون، خطط دراسية، قاعات، أنظمة تسجيل... إلخ).
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>٢) مفهوم نظام دعم القرار (تعريف عام)</h3>
+                <p>
+                    هو نظام حاسوبي يتكون من بيانات ومعدات وبرمجيات،  
+                    يُستخدم للتعامل <strong>الإبداعي</strong> مع البيانات بهدف الإجابة عن الأسئلة
+                    والمشكلات <strong>غير المهيكلة وشبه المهيكلة</strong>.
+                </p>
+            </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:1rem;">
+            <div class="card">
+                <h3>تعريف كينوسكو ومورتون</h3>
+                <p>
+                    نظم دعم القرار هي نظم تعتمد على الحاسوب  
+                    تستخدم <strong>موارد الأفراد وقدرات الحاسوب معاً</strong> لتحسين جودة القرار،  
+                    وتركّز على دعم متخذي القرار الذين يتعاملون مع مشاكل غير أو شبه مهيكلة.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>تعريف مور وشانج &amp; تعريف كين</h3>
+                <p>
+                    • مور وشانج: DSS نظام يمكنه التعامل مع المواقف شبه المهيكلة وغير المهيكلة،
+                    يدعم تحليل البيانات ونمذجة القرارات الموجهة نحو التخطيط المستقبلي.  
+                </p>
+                <p>
+                    • كين: DSS هو <strong>نتاج عملية تطوير</strong> يكون فيها مستخدم النظام والنظام نفسه
+                    قادرين على التأثير المتبادل في بعضهما البعض (أي يتم تطوير النظام مع المستخدم).
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- أنواع المعلومات داخل المنظمة -->
+    <section id="info-types" class="section reveal" data-label="أنواع المعلومات">
+        <h2>أنواع المعلومات داخل المنظمة</h2>
+        <p>
+            يمكن تقسيم المعلومات داخل المنظمة إلى ثلاثة مستويات رئيسية:
+        </p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>١) معلومات تشغيلية يومية</h3>
+                <p>
+                    هي معلومات ذات حجم كبير، تتعلق بالعمليات اليومية داخل المنظمة  
+                    (مثل: أوامر الشراء، كشوف الرواتب، حركات المخزون...).  
+                    تُستخدم عادة في نظم المعالجة التشغيلية <strong>TPS</strong>.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>٢) معلومات تكتيكية</h3>
+                <p>
+                    معلومات يتم استخلاصها من المستوى الأدنى،  
+                    تُستخدم في التخطيط المتوسط المدى ومتابعة الأداء (تقارير دورية، ملخصات...).  
+                    تخدم عادة الإدارة الوسطى.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>٣) معلومات استراتيجية</h3>
+                <p>
+                    معلومات استنتاجية وتحليلية تُستخدم في:
+                </p>
+                <ul>
+                    <li>اتخاذ القرارات الاستراتيجية بعيدة المدى.</li>
+                    <li>تحديد اتجاهات المنظمة وخططها المستقبلية.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- مجالات دعم القرار -->
+    <section id="dss-need" class="section reveal" data-label="لماذا نحتاج DSS؟">
+        <h2>لماذا ظهرت نظم دعم القرار؟</h2>
+        <p>
+            هناك مجموعة من الأسباب والحالات التي دفعت المنظمات إلى استخدام نظم دعم القرار:
+        </p>
+        <ul>
+            <li>وجود <strong>نظام اقتصادي غير مستقر نسبياً</strong>.</li>
+            <li>ازدياد المنافسة المحلية والعالمية بشكل كبير.</li>
+            <li>عدم قدرة الشركة على مجاراة ما يحدث في بيئتها الاقتصادية بدون أدوات تحليل قوية.</li>
+            <li>قصور النظام الأساسي الموجود في الشركة عن تطوير نفسها وفتح أسواق جديدة.</li>
+            <li>عدم قدرة الإدارة المسؤولة عن معالجة البيانات على تلبية احتياجات الإدارة العليا
+                من حيث التحليل والتفسير.</li>
+        </ul>
+        <p class="muted">
+            هنا يظهر دور نظم دعم القرار في تقديم نماذج، تقارير، ومحاكاة تساعد الإدارة في فهم
+            الوضع المعقد واتخاذ قرارات أفضل.
+        </p>
+    </section>
+
+    <!-- عناصر نظم دعم القرار -->
+    <section id="dss-components" class="section reveal" data-label="عناصر DSS">
+        <h2>عناصر نظم دعم القرار</h2>
+        <p>
+            حتى يعمل نظام دعم القرار بكفاءة، لا بد أن يتكون من مجموعة عناصر متكاملة:
+        </p>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>١) الحاسوب</h3>
+                <p>
+                    يمثل البنية التحتية المادية (Hardware) اللازمة لتخزين البيانات وتشغيل البرمجيات
+                    والنماذج التحليلية.
+                </p>
+
+                <h3 style="margin-top:0.6rem;">٢) نظام إدارة قاعدة البيانات (DBMS)</h3>
+                <p>
+                    مسؤول عن تنظيم البيانات، تخزينها، استرجاعها، وتحديثها، بحيث تكون
+                    <strong>المعلومات المطلوبة في متناول اليد</strong> بسرعة.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>٣) أدوات النمذجة والتحليل</h3>
+                <p>
+                    استخدام أدوات وأساليب مثل:
+                </p>
+                <ul>
+                    <li>المحاكاة (Simulation).</li>
+                    <li>البرمجة الخطية.</li>
+                    <li>تحليل الحساسية، ماذا لو (What-if Analysis).</li>
+                </ul>
+                <p>
+                    هذه الأدوات تقدم <strong>بدائل متعددة بأشكال مختلفة</strong> تساعد متخذ القرار.
+                </p>
+
+                <h3 style="margin-top:0.6rem;">٤) الكفاءات البشرية</h3>
+                <p>
+                    الحاجة إلى إداريين، محللين، ومبرمجين قادرين على:
+                </p>
+                <ul>
+                    <li>فهم المشكلة الإدارية.</li>
+                    <li>تطوير النماذج المناسبة داخل النظام.</li>
+                    <li>تفسير مخرجات النظام بشكل صحيح.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- تسلسل اتخاذ القرار وخصائص DSS -->
+    <section id="decision-process" class="section reveal" data-label="مراحل اتخاذ القرار">
+        <h2>مراحل اتخاذ القرار وخصائص نظم دعم القرار</h2>
+
+        <p>
+            تمر عملية اتخاذ القرار بمجموعة من المراحل المتتابعة، يمكن تلخيصها كما يلي:
+        </p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-title">١) المرحلة الاستخبارية (الذكاء)</div>
+                <div class="timeline-desc">
+                    في هذه المرحلة يتم <strong>تعريف وفهم المشكلة</strong>:
+                    ما سبب المشكلة؟ ما أعراضها ومؤشراتها؟ ما النتائج المترتبة على استمرارها؟
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-title">٢) مرحلة تصميم الحلول</div>
+                <div class="timeline-desc">
+                    يتم تقديم مجموعة من الحلول والبدائل الممكنة لمعالجة المشكلة.
+                    هنا يبرز دور DSS في <strong>اقتراح بدائل</strong> من خلال النماذج والتحليل.
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-title">٣) مرحلة الاختيار</div>
+                <div class="timeline-desc">
+                    اختيار <strong>أفضل حل</strong> من بين البدائل المقترحة، وفق معايير مثل التكلفة،
+                    الوقت، المخاطر، والإمكانيات المتاحة.
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-title">٤) مرحلة التنفيذ</div>
+                <div class="timeline-desc">
+                    تطبيق الحل المختار على أرض الواقع، ومتابعة النتائج وتصحيح المسار عند الحاجة.
+                </div>
+            </div>
+        </div>
+
+        <p style="margin-top:1rem;">
+            <strong>خصائص وإمكانات نظم دعم القرار:</strong>
+        </p>
+        <ul>
+            <li>تدعم متخذي القرار في مواقف متعددة، من خلال الدمج بين
+                <strong>الحكم البشري</strong> والمعلومات المحوسبة.</li>
+            <li>تخدم مستويات إدارية مختلفة (من التنفيذيين حتى التشغيليين).</li>
+            <li>يمكن أن تدعم قرارات فردية أو قرارات لمجموعات (DSS, GDSS).</li>
+            <li>تدعم كافة مراحل اتخاذ القرار: الاستخبار، التصميم، الاختيار، التنفيذ.</li>
+            <li>مرنة وقابلة للتغير حسب الظروف الجديدة.</li>
+            <li>تتميز بسهولة الاستخدام، وتشجع على التعلم وابتكار حلول جديدة.</li>
+            <li>تحسن فعالية القرار من حيث الدقة، السرعة، وجودة النتائج.</li>
+        </ul>
+    </section>
+
+    <!-- العلاقة مع نظم المعلومات الأخرى + مثال -->
+    <section id="relation" class="section reveal" data-label="علاقة DSS بالنظم الأخرى">
+        <h2>علاقة نظام دعم القرار بنظم المعلومات الأخرى</h2>
+        <p>
+            تهتم الإدارة العليا بالقرارات الاستراتيجية، والتي تحتاج إلى معلومات  
+            عن الاتجاهات العامة (وليس فقط التفاصيل التشغيلية).  
+            لذلك يتم بناء نموذج متكامل للشركة يتكون من:
+        </p>
+        <ul>
+            <li>نماذج لكل وظيفة أساسية: مالية، تسويق، قوى عاملة، تصنيع.</li>
+            <li>خليط من النظم الفرعية التي تمثّل هذه الوظائف على المستويات الثلاثة.</li>
+            <li>نموذج للبيئة الخارجية يشمل المنافسين، العملاء، القوانين، والحالة الاقتصادية.</li>
+        </ul>
+        <p class="muted">
+            نظم دعم القرار ترتبط بنظم المعلومات الإدارية (MIS) والنظم التشغيلية (TPS)،  
+            وتستفيد من بياناتها الخام لإنتاج معلومات تحليلية واستراتيجية.
+        </p>
+    </section>
+
+    <section id="example" class="section reveal" data-label="مثال تطبيقي">
+        <h2>مثال تطبيقي على استخدام نظم دعم القرار</h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3>١) قرار شراء معدات جديدة لمصنع</h3>
+                <p>
+                    قرار من هذا النوع يُعد قراراً استراتيجياً يتطلب دراسة:
+                </p>
+                <ul>
+                    <li>طرق توزيع المعدات داخل المصنع.</li>
+                    <li>فترة التنفيذ اللازمة للتركيب والتشغيل.</li>
+                    <li>التوسعات المستقبلية في الطاقة الإنتاجية.</li>
+                    <li>أماكن وضع المعدات وحركة المواد والعاملين.</li>
+                </ul>
+                <p>
+                    هنا يمكن استخدام:
+                </p>
+                <ul>
+                    <li>البرمجة الخطية لتقليل التكاليف.</li>
+                    <li>المحاكاة لدراسة تدفق العمل.</li>
+                    <li>إدارة مخططات مواقع العمليات المختلفة.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>٢) أمثلة أخرى</h3>
+                <ul>
+                    <li>اتخاذ قرار بفتح تخصص جديد في جامعة.</li>
+                    <li>اتخاذ قرار ببناء مبنى جديد للجامعة أو الكلية.</li>
+                </ul>
+                <p class="muted">
+                    في هذه الحالات، يساعد DSS في جمع بيانات عن الطلب المتوقع،  
+                    التكاليف، العائد المتوقع، الطاقة الاستيعابية، وغيرها من العوامل،  
+                    ليتمكن متخذ القرار من اختيار البديل الأنسب.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer>
+        <div>
+            إعداد الطالب:
+            <span class="student-name">قيس طلال الجازي</span>
+        </div>
+        <div class="muted">
+            مبني على سلايدات مادة نظم دعم القرار والنظم الذكية – الفصل الأول
+        </div>
+    </footer>
+</main>
+
+<!-- زر للأعلى -->
+<button id="scrollTopBtn" type="button" title="للأعلى">↑</button>
+
+<script>
+    // تبديل الثيم (ليلي / فاتح)
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const body = document.body;
+
+    function updateThemeIcon() {
+        const iconSpan = themeToggleBtn.querySelector('.icon');
+        if (body.classList.contains('dark-theme')) {
+            iconSpan.textContent = '☀';
+        } else {
+            iconSpan.textContent = '☾';
+        }
+    }
+
+    // تحميل ثيم محفوظ (اختياري)
+    const savedTheme = localStorage.getItem('dss-theme');
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-theme');
+    }
+    updateThemeIcon();
+
+    themeToggleBtn.addEventListener('click', () => {
+        body.classList.toggle('dark-theme');
+        const mode = body.classList.contains('dark-theme') ? 'dark' : 'light';
+        localStorage.setItem('dss-theme', mode);
+        updateThemeIcon();
+    });
+
+    // سكرول ناعم للروابط الداخلية
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+            const targetId = anchor.getAttribute('href');
+            if (!targetId || targetId === '#') return;
+            const targetEl = document.querySelector(targetId);
+            if (!targetEl) return;
+
+            e.preventDefault();
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+
+    // زر العودة للأعلى
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            scrollTopBtn.classList.add('visible');
+        } else {
+            scrollTopBtn.classList.remove('visible');
+        }
+    });
+
+    scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // تأثير ظهور الأقسام أثناء السحب (Intersection Observer)
+    const revealElements = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    revealElements.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
